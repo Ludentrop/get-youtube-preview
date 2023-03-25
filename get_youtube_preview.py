@@ -21,7 +21,8 @@ def get_video_id(url: str) -> str:
         (str): A video identifier
     """
 
-    return re.findall(r".+[shorts | be]/(.{11})", url)[0]
+    return url[-11:]
+    # return re.findall(r".+[shorts | be]/(.{11})", url)[0]
 
 
 def download(video_id: str) -> None:
