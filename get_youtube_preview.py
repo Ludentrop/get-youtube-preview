@@ -21,6 +21,9 @@ def get_video_id(url: str) -> str:
         (str): A video identifier
     """
 
+    if 'index' in url:
+        return re.findall(r".+=(.{11})&", url)[0]
+
     return url[-11:]
     # return re.findall(r".+[shorts | be]/(.{11})", url)[0]
 
@@ -36,10 +39,13 @@ def download(video_id: str) -> None:
         None
     """
 
-    data = r.get(f'https://img.youtube.com/vi/{video_id}/maxresdefault.jpg').content
+    data = r.get(f'https://img.youtube.com/vi/{video_id}/maxresdefault.jpg')
 
-    with open(f'image-{video_id}.jpg', 'wb') as file:
-        file.write(data)
+    if data.status_code == 200:
+        with open(f'image-{video_id}.jpg', 'wb') as file:
+            file.write(data.content)
+
+    return data.status_code
 
 
 
